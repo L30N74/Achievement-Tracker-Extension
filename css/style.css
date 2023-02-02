@@ -1,8 +1,36 @@
 body {
     width: 400px;
-    height: 300px;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-areas: "head" "body" "foot";
+    //grid-template-rows: [head] auto [body] auto [foot] auto; 
+    //gap: 10%;
 }
 
-h2, h3 {
-    align-self: center;
+#players_section {
+    grid-area: body;
+    display: flex;
+    gap: 20%;
+}
+
+#players_section>section {
+    justify-items: center;
+    align-items: center;
+}
+
+#bottom_section {
+    grid-area: foot;
+    margin-top: 3rem;
+}
+
+section>input {
+    display: block;
+}
+
+h2 {
+    grid-area: head;
+}
+
+section>h3 {
+    justify-items: center;
 }

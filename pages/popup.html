@@ -2,31 +2,34 @@
 <html>
     <head>
         <script src="../scripts/tracker.js" defer></script>
-        <script type="module" src="../scripts/contextMenu.js" defer></script>
+        <script src="../scripts/contextMenu.js" defer></script>
         <link rel="stylesheet" href="../css/style.css">
     </head>
     <body>
         <h2>Add points</h2>
-        <section id="section_leon">
-            <h3>Leon</h3>
-            <input value="1 Point" type="button" id="one_point_leon"></input>
-            <input value="3 Points" type="button" id="three_point_leon"></input>
-            <input value="Completed a game" type="button" id="completed_game_leon"></input>
-        </section>
+        <section id="players_section">
+            <section id="section_leon">
+                <h3>Leon</h3>
+                <p><span id="count_leon">0</span> <b>Achievements</b></p>
+                <p><span id="points_leon">0</span> <b>Points</b></p>
+                <input value="1 Point" type="button" id="one_point_leon"></input>
+                <input value="3 Points" type="button" id="three_point_leon"></input>
+                <input value="Completed a game" type="button" id="completion_leon"></input>
+            </section>
 
-        <section id="section_jasmin">
-            <h3>Jasmin</h3>
-            <input value="1 Point" type="button" id="one_point_jasmin"></input>
-            <input value="3 Points" type="button" id="three_point_jasmin"></input>
-            <input value="Completed a game" type="button" id="completed_game_jasmin"></input>
+            <section id="section_jasmin">
+                <h3>Jasmin</h3>
+                <p><span id="count_jasmin">0</span> <b>Achievements</b></p>
+                <p><span id="points_jasmin">0</span> <b>Points</b></p>
+                <input value="1 Point" type="button" id="one_point_jasmin"></input>
+                <input value="3 Points" type="button" id="three_point_jasmin"></input>
+                <input value="Completed a game" type="button" id="completion_jasmin"></input>
+            </section>
         </section>
-        <br/>
-        <br/>
-        <br/>
-        <input value="Declare the winner" type="button" id="declare_winner"></input>
-
-        <br/>
-        <br/>
-        <input type="text" placeholder="Count" id="textbox"/>
+        <section id="bottom_section">
+            <p id="log"></p>
+            <input value="Declare the winner" type="button" id="declare_winner"></input>
+            <input type="text" placeholder="Count" id="textbox"/>
+        </section>
     </body>
 </html>

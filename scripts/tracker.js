@@ -1,101 +1,161 @@
-const DEPLOYMENT_ID = "AKfycbxuBd0jwL04KsJR5o-5FqeDsdQTZxokJwNVGmfEDvB0VockZHVUR47PjGNT1xOS8J4fjw"
-const URL = `https://script.googleapis.com/v1/scripts/${DEPLOYMENT_ID}:run`
+const SHEET_ID = "";
+const SHEETS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?`;
+const SHEET_NAME = "Achievement Score";
 
-let authToken = "";
-window.onload = function() {
-    chrome.identity.getAuthToken({interactive: true}, function(token) {
-        authToken = token
-    })
-}
+let authToken = "1-ArEANPV3Prha7GlUoLAkGQ_i_K-H0uFrQWu2KNKuLA";
 
-var times_field = document.getElementById("textbox")
-var times = 1
-times_field.addEventListener('input', (event) => { 
-    times = times_field.value != '' ? times_field.value : 1; 
+var count_field_leon = document.getElementById("count_leon");
+var count_field_jasmin = document.getElementById("count_jasmin");
+var points_field_leon = document.getElementById("points_leon");
+var points_field_jasmin = document.getElementById("points_jasmin");
+
+var times_field = document.getElementById("textbox");
+var test_button = document.getElementById("test_button");
+
+var one_point_button_leon = document.getElementById("one_point_leon");
+var three_point_button_leon = document.getElementById("three_point_leon");
+var game_completed_leon_button = document.getElementById("completion_leon");
+
+var one_point_button_jasmin = document.getElementById("one_point_jasmin");
+var three_point_button_jasmin = document.getElementById("three_point_jasmin");
+var game_completed_jasmin_button = document.getElementById("completion_jasmin");
+
+var declare_winner_button = document.getElementById("declare_winner");
+var log_field = document.getElementById("log");
+
+var times = 1;
+times_field.addEventListener("input", (event) => {
+  times = times_field.value != "" ? times_field.value : 1;
 });
 
-var one_point_button_leon = document.getElementById("one_point_leon")
-one_point_button_leon.addEventListener('click', (event) => {
-    var response = sendPointsRequest("Leon", 1, times)
-})
+window.onload = function () {
+  chrome.identity.getAuthToken({ interactive: true }, function (token) {
+    chrome.runtime.sendMessage({ command: "token", data: token }, (response) =>
+      retrieveScoreValues()
+    );
+  });
+};
 
-var three_point_button_leon = document.getElementById("three_point_leon")
-three_point_button_leon.addEventListener('click', (event) => {
-    var response = sendPointsRequest("Leon", 3, times)
-})
+one_point_button_leon.addEventListener("click", (event) => {
+  chrome.runtime.sendMessage(
+    { command: "points", data: ["Leon", 1, times] },
+    (response) => {
+      log.innerHTML = response.message;
+      times_field.value = "";
 
-var game_completed_leon_button = document.getElementById("completed_game_leon")
-game_completed_leon_button.addEventListener('click', (event) => {
-    var response = sendPointsRequest("Leon", 5, times)
-})
+      retrieveScoreValues();
+    }
+  );
+});
 
-var one_point_button_jasmin = document.getElementById("one_point_jasmin")
-one_point_button_jasmin.addEventListener('click', (event) => {
-    var response = sendPointsRequest("Jasmin", 1, times)
-})
+three_point_button_leon.addEventListener("click", (event) => {
+  chrome.runtime.sendMessage(
+    {
+      command: "points",
+      data: ["Leon", 3, times],
+    },
+    (response) => {
+      log.innerHTML = response.message;
+      times_field.value = "";
 
-var three_point_button_jasmin = document.getElementById("three_point_jasmin")
-three_point_button_jasmin.addEventListener('click', (event) => {
-    var response = sendPointsRequest("Jasmin", 3, times)
-})
+      retrieveScoreValues();
+    }
+  );
+});
 
-var game_completed_jasmin_button = document.getElementById("completed_game_jasmin")
-game_completed_jasmin_button.addEventListener('click', (event) => {
-    var response = sendPointsRequest("Jasmin", 5, times)
-})
+game_completed_leon_button.addEventListener("click", (event) => {
+  chrome.runtime.sendMessage(
+    {
+      command: "points",
+      data: ["Leon", 5, times],
+    },
+    (response) => {
+      log.innerHTML = response.message;
+      times_field.value = "";
 
-var declare_winner_button = document.getElementById("declare_winner")
-declare_winner_button.addEventListener('click', (event) => {
-    var response = sendRequest("declareWinner")
-})
+      retrieveScoreValues();
+    }
+  );
+});
 
-async function sendRequest(methodName) {
-    var requestBody = prepareRequestBody(methodName)
+one_point_button_jasmin.addEventListener("click", (event) => {
+  chrome.runtime.sendMessage(
+    {
+      command: "points",
+      data: ["Jasmin", 1, times],
+    },
+    (response) => {
+      log.innerHTML = response.message;
+      times_field.value = "";
 
-    var response = await window.fetch(URL, {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'application/json'
-        },
-        'contentType': 'application/json',
-        body: requestBody
-    })
-    times_field.value = ""
+      retrieveScoreValues();
+    }
+  );
+});
+
+three_point_button_jasmin.addEventListener("click", (event) => {
+  chrome.runtime.sendMessage(
+    {
+      command: "points",
+      data: ["Jasmin", 3, times],
+    },
+    (response) => {
+      log.innerHTML = response.message;
+      times_field.value = "";
+
+      retrieveScoreValues();
+    }
+  );
+});
+
+game_completed_jasmin_button.addEventListener("click", (event) => {
+  chrome.runtime.sendMessage(
+    {
+      command: "points",
+      data: ["Jasmin", 5, times],
+    },
+    (response) => {
+      log.innerHTML = response.message;
+      times_field.value = "";
+
+      retrieveScoreValues();
+    }
+  );
+});
+
+declare_winner_button.addEventListener("click", (event) => {
+  chrome.runtime.sendMessage(
+    {
+      command: "declareWinner",
+      data: {},
+    },
+    (response) => {
+      log.innerHTML = response.message;
+
+      retrieveScoreValues();
+    }
+  );
+});
+
+function updateScores(scores) {
+  count_field_leon.innerHTML = scores.Count_Leon;
+  count_field_jasmin.innerHTML = scores.Count_Jasmin;
+  points_field_leon.innerHTML = scores.Points_Leon;
+  points_field_jasmin.innerHTML = scores.Points_Jasmin;
 }
 
-async function sendPointsRequest(player, points, howOften) {
-    var requestBody = preparePointsRequestBody(player, points, howOften)
-
-    var response = await window.fetch(URL, {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'application/json'
-        },
-        'contentType': 'application/json',
-        body: requestBody
-    })
-    times_field.value = ""
-}
-
-function prepareRequestBody(methodName) {
-    var payload = new Object();
-    payload.function = methodName;
-    payload.devMode = true;
-
-    return JSON.stringify(payload)
-}
-
-function preparePointsRequestBody(player, points, howOften) {
-    var payload = new Object();
-    payload.function = "addPoints";
-    payload.devMode = true;
-    payload.parameters = [
-        player, // to which player
-        points, // how many points to add
-        howOften
-    ];
-
-    return JSON.stringify(payload)
+function retrieveScoreValues() {
+  try {
+    chrome.runtime.sendMessage(
+      {
+        command: "retrieveScores",
+        data: {},
+      },
+      (response) => {
+        updateScores(response.message);
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
 }
