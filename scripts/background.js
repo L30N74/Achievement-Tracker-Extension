@@ -2,7 +2,7 @@ try {
   self.importScripts("./contextMenu.js");
 
   const DEPLOYMENT_ID =
-    "AKfycbyf7ypcrXaJ2MCysSlCo9tk-nE1yNvsYCjOBySwuWa2PD5Ob3iRHIbw-BUDIVXmDJcRLA";
+    "AKfycbxV9VYfTTFHXU10MQM8Cay6hq4i975EDJqWudEK3hZSUwkA-tdkIudqAR3JwN4g0tlg7Q";
   const URL = `https://script.googleapis.com/v1/scripts/${DEPLOYMENT_ID}:run`;
 
   let authToken;
