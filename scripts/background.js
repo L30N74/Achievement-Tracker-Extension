@@ -8,7 +8,6 @@ try {
   let authToken;
 
   chrome.runtime.onMessage.addListener((msg, sender, response) => {
-    console.log("Command received", msg.command);
     switch (msg.command) {
       case "token":
         authToken = msg.data;
@@ -54,7 +53,10 @@ try {
     });
 
     if (methodName != "getPointsAndScores") return null;
-
+    if(!response.ok) {
+      console.log("Unauthorized. Please contact product owner", response); 
+      return;
+    }
     return await extractJSON(response.body);
   }
 
