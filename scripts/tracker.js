@@ -124,6 +124,12 @@ game_completed_jasmin_button.addEventListener("click", (event) => {
 });
 
 declare_winner_button.addEventListener("click", (event) => {
+  var result = window.confirm("Are you sure you want to declare the winner?");
+  if (!result) {
+    console.log("Aborting winner declaration");
+    return;
+  }
+
   chrome.runtime.sendMessage(
     {
       command: "declareWinner",
