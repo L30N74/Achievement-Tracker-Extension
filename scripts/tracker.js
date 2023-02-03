@@ -2,8 +2,6 @@ const SHEET_ID = "";
 const SHEETS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?`;
 const SHEET_NAME = "Achievement Score";
 
-let authToken = "1-ArEANPV3Prha7GlUoLAkGQ_i_K-H0uFrQWu2KNKuLA";
-
 var count_field_leon = document.getElementById("count_leon");
 var count_field_jasmin = document.getElementById("count_jasmin");
 var points_field_leon = document.getElementById("points_leon");
